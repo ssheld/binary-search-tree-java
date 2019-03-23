@@ -236,6 +236,64 @@ public class BST<Key extends Comparable<Key>, Value> {
         postOrder(x.left);
     }
 
+    // Returns key with k number of keys smaller
+    public Key select(int k) {
+        if (k < 0 || k >= size())
+            throw new IllegalArgumentException();
+        Node x = select(root, k);
+        return x.key;
+    }
+
+    private Node select(Node x, int k) {
+        if (x == null)
+            return x;
+        // Check size of the left
+        int t = size(x.left);
+        // If there exist more than k nodes on the left then
+        // let's traverse down there
+        if (t > k)
+            return select(x.left, k);
+        else if (t < k)
+            return select(x.right, k-t-1);
+        else
+            return x;
+    }
+
+    public int rank(Key key) {
+        return rank(root, key);
+    }
+
+    // Return number of keys less than key in the subtree rooted at x
+    private int rank(Node x, Key key) {
+        if (x == null)
+            return 0;
+        int cmp = key.compareTo(x.key);
+
+        if (cmp < 0)
+            return rank(x.left, key);
+        else if (cmp > 0)
+            return 1 + size(x.left) + rank(x.right, key);
+        else
+            return size(x.left);
+    }
+
+    // Delete min key from tree
+    public void deleteMin() {
+        if (isEmpty())
+            throw new NoSuchElementException();
+        root = deleteMin(root);
+    }
+
+    private Node deleteMin(Node x) {
+        if (x.left == null)
+            return x.right;
+        x.left = deleteMin(x.left);
+        x.n = size(x.left) + size (x.right) + 1;
+        return x;
+    }
+
+
+
     // Check if the tree is currently empty
     public boolean isEmpty() {
         return size() == 0;
