@@ -181,9 +181,12 @@ public class BST<Key extends Comparable<Key>, Value> {
             return null;
         int cmp = key.compareTo(x.key);
 
+        // The keys are equal
         if (cmp == 0)
             return x;
-        else if (cmp < 0)
+        // The key at the current node is less than the key
+        // we are looking for, so let's traverse right
+        else if (cmp > 0)
             return ceiling(x.right, key);
 
         Node t = ceiling(x.left, key);
