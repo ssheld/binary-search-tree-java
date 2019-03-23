@@ -197,6 +197,45 @@ public class BST<Key extends Comparable<Key>, Value> {
             return x;
     }
 
+    // Pre-order traversal of tree that prints key and value
+    public void preOrder() {
+        preOrder(root);
+    }
+
+    private void preOrder(Node x) {
+        if (x == null)
+            return;
+        System.out.println("Key: " + x.key + " Value: " + x.val);
+        preOrder(x.left);
+        preOrder(x.right);
+    }
+
+    // In-order traversal of tree that prints key and value
+    public void inOrder() {
+        inOrder(root);
+    }
+
+    private void inOrder(Node x) {
+        if (x == null)
+            return;
+        inOrder(x.left);
+        System.out.println("Key: " + x.key + " Value: " + x.val);
+        inOrder(x.right);
+    }
+
+    // Post-order traversal of tree that prints key and value
+    public void postOrder() {
+        postOrder(root);
+    }
+
+    private void postOrder(Node x) {
+        if (x == null)
+            return;
+        postOrder(x.right);
+        System.out.println("Key: " + x.key + " Value: " + x.val);
+        postOrder(x.left);
+    }
+
     // Check if the tree is currently empty
     public boolean isEmpty() {
         return size() == 0;
