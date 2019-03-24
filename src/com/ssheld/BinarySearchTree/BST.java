@@ -63,10 +63,10 @@ public class BST<Key extends Comparable<Key>, Value> {
 
         // Our key is smaller than current node tree so traverse left
         if (cmp < 0)
-            get(x.left, key);
+            return get(x.left, key);
         // Otherwise our key is greater than our current node so traverse right
-        else
-            get(x.right, key);
+        else if (cmp > 0)
+            return get(x.right, key);
         // We've found the key! Return the associated value
         return x.val;
     }
@@ -86,10 +86,10 @@ public class BST<Key extends Comparable<Key>, Value> {
         int cmp = key.compareTo(x.key);
         // Our key is smaller than current node key so move left
         if (cmp < 0)
-            put(x.left, key, val);
+            x.left = put(x.left, key, val);
         // Our key is greater than current key so move right
         else if (cmp > 0)
-            put(x.right, key, val);
+            x.right = put(x.right, key, val);
         // If the key we wish to insert is equal to the key of current node
         // then let's change the value
         else
@@ -231,9 +231,9 @@ public class BST<Key extends Comparable<Key>, Value> {
     private void postOrder(Node x) {
         if (x == null)
             return;
+        postOrder(x.left);
         postOrder(x.right);
         System.out.println("Key: " + x.key + " Value: " + x.val);
-        postOrder(x.left);
     }
 
     // Returns key with k number of keys smaller
@@ -289,6 +289,49 @@ public class BST<Key extends Comparable<Key>, Value> {
             return x.right;
         x.left = deleteMin(x.left);
         x.n = size(x.left) + size (x.right) + 1;
+        return x;
+    }
+
+    // Method to delete node with a specific key
+    public void delete(Key key) {
+        root = delete(root, key);
+    }
+
+    private Node delete(Node x, Key key) {
+        // First check if null
+        if (x == null)
+            return null;
+
+        int cmp = key.compareTo(x.key);
+
+        // Head left and relink the tree down the left side of current node
+        if (cmp < 0)
+            x.left = delete(x.left, key);
+        // Head right and relink the tree down the right side of current node
+        else if (cmp > 0)
+            x.right = delete(x.right, key);
+        // Otherwise we've found the node we wish to delete.
+        else {
+            // Case: Node with only right child
+            if (x.left == null) {
+                return x.right;
+            }
+            // Case : Node with only left child
+            else if (x.right == null) {
+                return x.left;
+            }
+            // Case : node has two children
+            // Save reference to node to be deleted
+            Node t = x;
+            // The min of it's right subtree will take it's place
+            x = min(t.right);
+            // Now delete that min from the right subtree
+            x.right = deleteMin(t.right);
+            // And finally set the left link of x (min) to left subtree
+            // of the node we wish to delete
+            x.left = t.left;
+        }
+        x.n = size(x.left) + size(x.right) + 1;
         return x;
     }
 
