@@ -2,6 +2,7 @@ import com.ssheld.BinarySearchTree.BST;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
@@ -51,9 +52,13 @@ public class PeopleTree {
             System.out.println("3. Print the tree pre-order");
             System.out.println("4. Print the tree post-order");
             System.out.println("5. Get the age of a person");
+            System.out.println("6. Print a list of people at each level of tree");
+            System.out.println("7. Get the height of the tree");
+            System.out.println("8. Get the distance a person is from root node");
             System.out.println("0. Exit the program");
             choice = stdin.nextInt();
             stdin.nextLine();
+            System.out.println();
             if (choice == 1) {
                 System.out.println("Please enter the name of the person you wish to delete.");
                 choiceName = stdin.nextLine();
@@ -70,6 +75,25 @@ public class PeopleTree {
                 choiceName = stdin.nextLine();
                 System.out.printf("The age of %s is %d%n", choiceName, peopleTree.get(choiceName));
             }
+            else if (choice == 6) {
+                LinkedList<String>[] depthList = peopleTree.depthLists();
+                for (int i = 0; i < depthList.length; i++) {
+                    System.out.printf("List at Depth of %d:", i);
+                    for(String w : depthList[i]) {
+                        System.out.printf(" %s", w);
+                    }
+                    System.out.println();
+                }
+            }
+            else if (choice == 7) {
+                System.out.printf("Current height of the BST is %d%n", peopleTree.height());
+            }
+            else if (choice == 8) {
+                System.out.println("Please enter the name of the person you wish to search for.");
+                choiceName = stdin.nextLine().toLowerCase();
+                System.out.printf("%s is %d levels from root node%n", choiceName, peopleTree.distanceFromRoot(choiceName));
+            }
+            System.out.println();
         } while(choice != 0);
     }
 }

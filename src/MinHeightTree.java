@@ -1,5 +1,7 @@
 import com.ssheld.BinarySearchTree.BST;
 
+import java.util.LinkedList;
+
 /**
  * Author: Stephen Sheldon 4/5/2019
  *
@@ -20,6 +22,18 @@ public class MinHeightTree {
         System.out.printf("The height of you're tree is %d%n%n", myBST.height());
 
         myBST.preOrder();
+
+        System.out.printf("Grabbing the lists of each depth...%n%n");
+
+        LinkedList<Integer>[] depthList = myBST.depthLists();
+
+        for (int i = 0; i < depthList.length; i++) {
+            System.out.printf("List at Depth of %d:", i);
+            for(int w : depthList[i]) {
+                System.out.printf(" %d", w);
+            }
+            System.out.println();
+        }
     }
 
     private static void minTree(int[] arr, int lo, int hi, BST<Integer, Integer> myBST) {

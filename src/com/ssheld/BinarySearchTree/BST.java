@@ -1,5 +1,6 @@
 package com.ssheld.BinarySearchTree;
 
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 /**
@@ -352,6 +353,57 @@ public class BST<Key extends Comparable<Key>, Value> {
             return left;
         }
         return right;
+    }
+
+    public LinkedList<Key>[] depthLists() {
+        return depthLists(root);
+    }
+
+    private LinkedList<Key>[] depthLists(Node root) {
+        LinkedList<Node> q = new LinkedList<>();
+        // Make an array of Linked List of height of tree
+        LinkedList<Key>[] depthList = new LinkedList[height(root)];
+        for (int i = 0; i < depthList.length; i++) {
+            depthList[i] = new LinkedList<>();
+        }
+        q.add(root);
+        while (!q.isEmpty()) {
+            Node t = q.remove();
+            depthList[distanceFromRoot(t.key)].add(t.key);
+
+            if (t.left != null) {
+                q.add(t.left);
+            }
+            if (t.right != null) {
+                q.add(t.right);
+            }
+        }
+        return depthList;
+    }
+
+    public int distanceFromRoot(Key k) {
+        return distanceFromRoot(root, k);
+    }
+
+    private int distanceFromRoot(Node node, Key k) {
+        if (node == null) {
+            return 0;
+        }
+        int distance = 0;
+
+        // Compare it to our current node
+        int cmp = k.compareTo(node.key);
+
+        // We need to go left if k is less than zero
+        if(cmp < 0) {
+            distance = distanceFromRoot(node.left, k) + 1;
+        }
+        else if (cmp > 0) {
+            distance = distanceFromRoot(node.right, k) + 1;
+        }
+
+        // If we've found the node
+        return distance;
     }
 
     // Check if the tree is currently empty
